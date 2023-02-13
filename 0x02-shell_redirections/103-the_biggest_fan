@@ -1,0 +1,12 @@
+#!/bin/bash
+declare -A hosts
+while read line; do
+  host="$(echo $line | awk -F "\t" '{print $1}')"
+  ((hosts[$host]++))
+done < $1
+sorted_hosts=($(for host in "${!hosts[@]}"; do
+  echo "$host ${hosts[$host]}"
+done | sort -k2nr | awk '{print $1}'))
+for ((i=0; i < 11; i++)); do
+  echo "${sorted_hosts[$i]}"
+done
